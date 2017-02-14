@@ -1,0 +1,221 @@
+let mapleader = ","
+
+call plug#begin('~/.vim/plugged')
+
+" Ui
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'bling/vim-bufferline'
+Plug 'kien/ctrlp.vim'
+
+Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
+let g:NERDTreeWinSize = 29
+noremap <Leader>n :NERDTreeToggle<CR>
+
+Plug 'junegunn/vim-easy-align'
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+
+" Laravel
+Plug 'tpope/vim-dispatch'
+Plug 'tpope/vim-projectionist'
+Plug 'noahfrederick/vim-composer'
+Plug 'noahfrederick/vim-laravel'
+Plug 'jwalton512/vim-blade'
+
+Plug 'posva/vim-vue'
+Plug 'pangloss/vim-javascript'
+
+Plug 'mattn/emmet-vim'
+
+" Code completion
+Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
+Plug 'w0rp/ale'
+
+" tpope
+Plug 'tpope/vim-sensible' " sensible defaults
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-fugitive' " using git
+Plug 'tpope/vim-unimpaired'
+
+Plug 'airblade/vim-gitgutter'
+
+" Writing
+Plug 'xolox/vim-misc' | Plug 'xolox/vim-notes'
+let g:notes_directories = ['~/i/notes']
+let g:notes_suffix = '.note'
+
+Plug 'junegunn/goyo.vim'
+Plug 'junegunn/limelight.vim'
+
+" colorschemes
+Plug 'lifepillar/vim-solarized8'
+Plug 'morhetz/gruvbox'
+
+
+call plug#end()
+
+
+"
+au BufWritePost $MYVIMRC so $MYVIMRC
+
+" set colorscheme
+
+" custom configs
+set cursorline
+set number
+set termguicolors
+
+let g:colors_name = 'solarized8_light'
+let &l:background = 'light'
+
+
+function! BackgroundToggle()
+    if &l:background == 'light'
+        let &l:background = 'dark'
+    else
+        let &l:background = 'light'
+    endif
+endfunction
+noremap <Leader>bg :call BackgroundToggle() <CR>
+
+
+function! JournalEntry()
+    1 read !date '+\%B \%d, \%Y \ \%I:\%M\%P \ \%a'
+endfunction
+
+au BufNewFile *.note silent :call JournalEntry()
+autocmd! User GoyoEnter Limelight
+autocmd! User GoyoLeave Limelight!
+
+if has("autocmd")
+    au BufEnter *.md setf markdown
+    au BufEnter *.note setf notes
+    au FileType python setlocal expandtab
+    au FileType notes setlocal spell nonumber nolist laststatus=1
+    au FileType html,blade,ruby,eruby,htmljinja,jinja2 setlocal tabstop=2 softtabstop=2 shiftwidth=2 expandtab
+endif
+
+"Change word
+set cpoptions+=$
+
+"Tab of size for spaces
+set tabstop=4
+set shiftwidth=4
+set shiftround
+set softtabstop=4
+set linebreak
+set expandtab
+set autoindent
+
+
+set hidden
+set lazyredraw
+set showcmd
+set noshowmode
+set mousehide
+
+set foldopen=block,insert,jump,mark,percent,quickfix,search,tag,undo
+set scrolloff=8
+set showfulltag
+
+set fillchars = ""
+
+set textwidth=79
+set clipboard+=unnamed
+set autoread
+
+set diffopt+=vertical
+set foldmethod=syntax
+
+" Printing options
+set printoptions=header:0,duplex:long,paper:letter
+set list
+"lstchars=eol:$,tab:>-,trail:~,extends:>,precedes:<
+set listchars=tab:»\ ,eol:¬,trail:⋅,extends:❯,precedes:❮
+"set listchars=tab:▸\ ,eol:¬,space:⋅,trail:⋅,extends:❯,precedes:❮
+set showbreak=↪
+
+"------------------------------------------------------------------------------
+"Mappings
+"------------------------------------------------------------------------------
+
+" Unmap the arrow keys
+no <down> <Nop>
+no <left> <Nop>
+no <right> <Nop>
+no <up> <Nop>
+ino <down> <Nop>
+ino <left> <Nop>
+ino <right> <Nop>
+ino <up> <Nop>
+vno <down> <Nop>
+vno <left> <Nop>
+vno <right> <Nop>
+vno <up> <Nop>
+
+" Clear search highlights
+noremap <silent><Leader>/ :nohls<CR>
+
+" Switch Tabs
+noremap <C-t> :tabe<CR>
+map <C-S-Tab> :tabprevious<CR>
+map <C-Tab> :tabnext<CR>
+inoremap <C-S-Tab> <ESC>:tabprevious<CR>
+inoremap <C-Tab> <ESC>:tabnext<CR>
+noremap <M-1> 1gt
+noremap <M-2> 2gt
+noremap <M-3> 3gt
+noremap <M-4> 4gt
+noremap <M-5> 5gt
+noremap <M-6> 6gt
+noremap <M-7> 7gt
+noremap <M-8> 8gt
+noremap <M-9> 9gt
+
+" Esc alternative
+inoremap jk <Esc>
+"inoremap <c-c> <Esc>
+noremap <Leader>e :update<CR>
+noremap <Leader>q :q<CR>
+
+" Paste from system clipboard
+noremap <Leader>p "+p
+noremap <Leader>y "+y
+
+noremap <Leader>ov :e $MYVIMRC<CR>
+noremap <Leader>cd :cd %:p:h<CR>:pwd<CR>
+noremap <Leader>lcd :lcd %:p:h<CR>:pwd<CR>
+
+"nnoremap j gj
+"nnoremap k gk
+
+noremap <Leader>W :w !sudo tee % > /dev/null<cr>
+
+
+" Buffers
+noremap <Leader>a :bprevious<CR>
+noremap <Leader>s :bnext<CR>
+noremap <Leader>d :bd<CR>
+noremap <Leader>1 :b1<CR>
+noremap <Leader>2 :b2<CR>
+noremap <Leader>3 :b3<CR>
+noremap <Leader>4 :b4<CR>
+noremap <Leader>5 :b5<CR>
+noremap <Leader>6 :b6<CR>
+noremap <Leader>7 :b7<CR>
+noremap <Leader>8 :b8<CR>
+noremap <Leader>9 :b9<CR>
+
+" emacs like editing for commandline
+cnoremap <C-a>  <Home>
+cnoremap <C-e>  <End>
+cnoremap <C-b>  <Left>
+cnoremap <C-f>  <Right>
+"cnoremap <C-d>  <Delete>
+cnoremap <M-b>  <S-Left>
+cnoremap <M-f>  <S-Right>
+cnoremap <M-d>  <S-right><Delete>
+cnoremap <Esc>b <S-Left>
+cnoremap <Esc>f <S-Right>
+cnoremap <Esc>d <S-right><Delete>
+cnoremap <C-g>  <C-c>
