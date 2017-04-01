@@ -5,13 +5,53 @@ call plug#begin('~/.vim/plugged')
 " Ui
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
+" air-line
+let g:airline_powerline_fonts = 1
+
+if !exists('g:airline_symbols')
+    let g:airline_symbols = {}
+endif
+
+" unicode symbols
+let g:airline_left_sep = '»'
+let g:airline_left_sep = '▶'
+let g:airline_right_sep = '«'
+let g:airline_right_sep = '◀'
+let g:airline_symbols.linenr = '␊'
+let g:airline_symbols.linenr = '␤'
+let g:airline_symbols.linenr = '¶'
+let g:airline_symbols.branch = '⎇'
+let g:airline_symbols.paste = 'ρ'
+let g:airline_symbols.paste = 'Þ'
+let g:airline_symbols.paste = '∥'
+let g:airline_symbols.whitespace = 'Ξ'
+
+" airline symbols
+let g:airline_left_sep = ''
+let g:airline_left_alt_sep = ''
+let g:airline_right_sep = ''
+let g:airline_right_alt_sep = ''
+let g:airline_symbols.branch = ''
+let g:airline_symbols.readonly = ''
+let g:airline_symbols.linenr = ''
+
+
+Plug 'Yggdroot/indentLine', { 'on':  'IndentLinesToggle' }
+let g:indentLine_char = '┆'
+
 Plug 'bling/vim-bufferline'
 Plug 'kien/ctrlp.vim'
+let g:ctrlp_custom_ignore = {
+  \ 'dir':  '\v[\/](\.git|node_modules|bower_components|vendor)$',
+  \ 'file': '\v\.(exe|so|dll)$',
+  \ 'link': '',
+  \ }
 
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
 let g:NERDTreeWinSize = 29
 noremap <Leader>n :NERDTreeToggle<CR>
 
+Plug 'scrooloose/nerdcommenter'
 Plug 'junegunn/vim-easy-align'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 
@@ -21,15 +61,47 @@ Plug 'tpope/vim-projectionist'
 Plug 'noahfrederick/vim-composer'
 Plug 'noahfrederick/vim-laravel'
 Plug 'jwalton512/vim-blade'
-
 Plug 'posva/vim-vue'
 Plug 'pangloss/vim-javascript'
+Plug 'stephpy/vim-php-cs-fixer'
+" If you use php-cs-fixer version 2.x
+" let g:php_cs_fixer_rules = "@PSR2"          " options: --rules (default:@PSR2)
+"let g:php_cs_fixer_cache = ".php_cs.cache" " options: --cache-file
+let g:php_cs_fixer_config_file = '~/workspace/mr-configs/php/php_cs' " options: --config
+" End of php-cs-fixer version 2 config params
+
+let g:php_cs_fixer_php_path = "php"               " Path to PHP
+let g:php_cs_fixer_enable_default_mapping = 1     " Enable the mapping by default (<leader>pcd)
+let g:php_cs_fixer_dry_run = 0                    " Call command with dry-run option
+let g:php_cs_fixer_verbose = 0                    " Return the output of command if 1, else an inline information.
+
+Plug 'StanAngeloff/php.vim'
+" Put at the very end of your .vimrc file.
+function! PhpSyntaxOverride()
+  hi! def link phpDocTags  phpDefine
+  hi! def link phpDocParam phpType
+endfunction
+
+augroup phpSyntaxOverride
+  autocmd!
+  autocmd FileType php call PhpSyntaxOverride()
+augroup END
+
+Plug 'arnaud-lb/vim-php-namespace'
 
 Plug 'mattn/emmet-vim'
 
 " Code completion
 Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
+let g:UltiSnipsSnippetsDir = '~/.vim/UltiSnips'
+
+" Linting
 Plug 'w0rp/ale'
+let g:ale_php_phpcs_standard = 'PSR2'
+let g:ale_linters = {
+\   'javascript': ['eslint'],
+\   'php': ['phpcs'],
+\}
 
 " tpope
 Plug 'tpope/vim-sensible' " sensible defaults
@@ -65,9 +137,19 @@ set cursorline
 set number
 set termguicolors
 
-let g:colors_name = 'solarized8_light'
-let &l:background = 'light'
 
+" Set colorschemes specific stuff
+function! ColorSchemes()
+    let g:solarized_visibility ='low'
+    let g:solarized_contrast = 'high'
+    let g:colors_name = 'solarized8_light'
+    let &l:background = 'light'
+"    let g:colors_name = 'gruvbox'
+"    let &l:background = 'dark'
+    "let g:colors_name = 'solarized'
+    "let &l:background = 'light'
+endfunction()
+call ColorSchemes()
 
 function! BackgroundToggle()
     if &l:background == 'light'
@@ -90,9 +172,8 @@ autocmd! User GoyoLeave Limelight!
 if has("autocmd")
     au BufEnter *.md setf markdown
     au BufEnter *.note setf notes
-    au FileType python setlocal expandtab
     au FileType notes setlocal spell nonumber nolist laststatus=1
-    au FileType html,blade,ruby,eruby,htmljinja,jinja2 setlocal tabstop=2 softtabstop=2 shiftwidth=2 expandtab
+    au FileType html,blade,javascript setlocal tabstop=2 softtabstop=2 shiftwidth=2 expandtab
 endif
 
 "Change word
@@ -117,6 +198,7 @@ set mousehide
 set foldopen=block,insert,jump,mark,percent,quickfix,search,tag,undo
 set scrolloff=8
 set showfulltag
+"set foldmethod=syntax
 
 set fillchars = ""
 
@@ -125,7 +207,6 @@ set clipboard+=unnamed
 set autoread
 
 set diffopt+=vertical
-set foldmethod=syntax
 
 " Printing options
 set printoptions=header:0,duplex:long,paper:letter
