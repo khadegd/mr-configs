@@ -1,0 +1,1 @@
+/home/ganesh/.files/i3
