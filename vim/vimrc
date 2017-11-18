@@ -130,12 +130,12 @@ set termguicolors
 
 " Set colorschemes specific stuff
 function! ColorSchemes()
-    let g:solarized_visibility ='low'
-    let g:solarized_contrast = 'high'
-    let g:colors_name = 'solarized8_light'
-    let &l:background = 'light'
-"    let g:colors_name = 'gruvbox'
-"    let &l:background = 'dark'
+"   let g:solarized_visibility ='low'
+"   let g:solarized_contrast = 'high'
+"   let g:colors_name = 'solarized8_light'
+"   let &l:background = 'light'
+    let g:colors_name = 'gruvbox'
+    let &l:background = 'dark'
     "let g:colors_name = 'solarized'
     "let &l:background = 'light'
 endfunction()

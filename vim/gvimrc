@@ -1,13 +1,14 @@
-let &l:background = 'light'
-let g:colors_name = 'solarized'
+let &l:background = 'dark'
+let g:colors_name = 'gruvbox'
 
 set guioptions-=r   "kill right scrollbar
 set guioptions-=l   "kill left scrollbar
 set guioptions-=L   "kill left scrollbar multiple buffers
 set guioptions-=T   "kill toolbar
+set guioptions=acg
 
 
 set guicursor=n-v-c:block-Cursor-blinkon0,ve:ver35-Cursor,o:hor50-Cursor,i-ci:ver25-Cursor,r-cr:hor20-Cursor,sm:block-Cursor-blinkwait175-blinkoff150-blinkon175
 
 set switchbuf=usetab
-set guifont=Iosevka\ 14
+set guifont=Fira\ Code\ 13
